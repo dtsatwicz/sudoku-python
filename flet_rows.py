@@ -3,11 +3,8 @@ import flet as ft
 if __name__ == "__main__":
 
     cell_containers = []
-    cell_row = []
-    cell_col = []
-    cell_box = []
-    cell_value = []
     sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
+    highlighted_cell = ''
 
     def main(page: ft.Page):
         page.title="Sudoku"
@@ -44,16 +41,28 @@ if __name__ == "__main__":
             return 9
     
         def cell_click(e):
-            print (e.control.content.semantics_label)
-            print (e.control.data["cell_index"])
+            highlighted_cell = e
+            highlighted_cell.control.bgcolor=ft.colors="red"
+            print (highlighted_cell.control.data)
+
+        def action_click(highlighted_cell):
+            print (highlighted_cell.control.content.semantics_label)
+            ##print (e.control.data["cell_index"])
+            print (highlighted_cell.control.data)
             print ("new_value=", new_value.current.value)
             if new_value.current.value in sudoku_numbers:
-                e.control.content = ft.Text(new_value.current.value)
-                e.control.alignment=ft.alignment.center
-                e.control.bgcolor=ft.colors="green"
+                highlighted_cell.control.content = ft.Text(new_value.current.value)
+                highlighted_cell.control.data["cell_current_value"] = new_value.current.value
+                highlighted_cell.control.data["cell_value_source"] = "cell_click"
+                highlighted_cell.control.alignment=ft.alignment.center
+                highlighted_cell.control.bgcolor=ft.colors="green"
+            elif new_value.current.value == '':
+                highlighted_cell.control.content = ft.Text(new_value.current.value)
+                highlighted_cell.control.alignment=ft.alignment.center
+                highlighted_cell.control.bgcolor=ft.colors="blue"
             elif new_value.current.value == 'rn':
-                print("rn row_needs", row_of(e.control.data["cell_index"]))
-                row_needs(row_of(e.control.data["cell_index"]))
+                print("rn row_needs", row_of(highlighted_cell.control.data["cell_index"]))
+                row_needs(row_of(highlighted_cell.control.data["cell_index"]))
 
             elif new_value.current.value == 'cn':
                 print ("col_needs")    
@@ -72,7 +81,6 @@ if __name__ == "__main__":
             this_row = []
             for col in range (1,10):
                 c = ft.Container(
-                    ##content=ft.Text("r"+str(row)+"c"+str(col), semantics_label=str(row)+ " " + str(col) ),
                     content=ft.Text(""),
                     width=20,
                     height=20,
@@ -82,17 +90,12 @@ if __name__ == "__main__":
                            "cell_row": row,
                            "cell_col": col,
                            "cell_box": box_of(row,col),
-                           "cell_initial_value": '',
                            "cell_current_value": '',
                            "cell_value_source": ''},
                     on_click=cell_click,
                 )
                 cell_index += 1
 
-                ##cell_row.append(row)
-                ##cell_col.append(col)
-                ##cell_box.append(box_of(row,col))
-                ##cell_value.append('')
                 cell_containers.append(c)
                 this_row.append(c)
 
@@ -101,7 +104,7 @@ if __name__ == "__main__":
         page.add(
             ft.TextField(ref=new_value, 
                          label="Action 1-9 set, rn=row_needs, cn=col_needs, bn=box_needs", 
-                         autofocus=True, width=500),
+                         autofocus=True, width=300),
             )
 
     ft.app(target=main)
