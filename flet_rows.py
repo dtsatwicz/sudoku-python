@@ -1,6 +1,6 @@
 import flet as ft
 
-if __name__ == "__main__":
+if __name__ == "__main__" or True:
 
     cell_containers = []
     sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
@@ -8,8 +8,8 @@ if __name__ == "__main__":
 
     def main(page: ft.Page):
         page.title="Sudoku"
-        page.window_height=600
-        page.window_width=500
+        page.window_height=400
+        page.window_width=300
         ##page.window_center()
 
         new_value = ft.TextField(label='1-9', autofocus=True)
@@ -104,7 +104,7 @@ if __name__ == "__main__":
         page.add(
             ft.TextField(ref=new_value, 
                          label="Action 1-9 set, rn=row_needs, cn=col_needs, bn=box_needs", 
-                         autofocus=True, width=300),
+                         autofocus=True, width=200),
             )
 
     ft.app(target=main)
