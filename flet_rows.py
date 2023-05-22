@@ -2,17 +2,20 @@ import flet as ft
 
 if __name__ == "__main__" or True:
 
-    cell_containers = []
-    sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
-    highlighted_cell = ''
-
     def main(page: ft.Page):
+
         page.title="Sudoku"
         page.window_height=400
         page.window_width=300
         ##page.window_center()
 
+        cell_containers = []
+        sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
+        highlighted_cell = ft.Container()
+
+
         new_value = ft.TextField(label='1-9', autofocus=True)
+
         def cell_of(row, col):
             return ((row -1) * 9 ) + col -1
 
@@ -41,13 +44,23 @@ if __name__ == "__main__" or True:
             return 9
     
         def cell_click(e):
-            highlighted_cell = e
-            highlighted_cell.control.bgcolor=ft.colors="red"
-            print (highlighted_cell.control.data)
+            global highlighted_cell
 
-        def action_click(highlighted_cell):
+            if e.control.data["cell_highlighted"]==True:
+                e.control.data["cell_highlighted"]=False
+                e.control.bgcolor = ft.color=e.control.data["cell_bgcolor"]
+            else:
+                e.control.bgcolor=ft.colors="red"
+                e.control.data["cell_highlighted"]=True
+
+            highlighted_cell = e
+
+            page.update()
+
+        def action_click():
+            global highlighted_cell
+
             print (highlighted_cell.control.content.semantics_label)
-            ##print (e.control.data["cell_index"])
             print (highlighted_cell.control.data)
             print ("new_value=", new_value.current.value)
             if new_value.current.value in sudoku_numbers:
@@ -71,35 +84,72 @@ if __name__ == "__main__" or True:
             else:
                 print ("something else", new_value.current.value)    
 
-            e.control.update()
+            page.update()
 
         def row_needs(row):
             print ("row_needs", row)
+        
+        def user_set_number(e):
+            global highlighted_cell
 
-        cell_index = 0
-        for row in range (1,10):
-            this_row = []
-            for col in range (1,10):
-                c = ft.Container(
-                    content=ft.Text(""),
-                    width=20,
-                    height=20,
-                    bgcolor="blue",
-                    ink=False,
-                    data= {"cell_index": cell_index,
-                           "cell_row": row,
-                           "cell_col": col,
-                           "cell_box": box_of(row,col),
-                           "cell_current_value": '',
-                           "cell_value_source": ''},
-                    on_click=cell_click,
-                )
-                cell_index += 1
+            new_value=e.control.data["sudoku_number"]
+            print ("new_value=", new_value, sudoku_numbers)
+            print (new_value in sudoku_numbers)
+            if new_value in sudoku_numbers:
+                highlighted_cell.content = ft.Text(new_value)
+                highlighted_cell.control.data["cell_current_value"] = new_value
+                highlighted_cell.control.data["cell_value_source"] = "cell_click"
+                highlighted_cell.bgcolor=ft.colors="green"
 
-                cell_containers.append(c)
-                this_row.append(c)
+            page.update()
 
-            page.add(ft.Row(this_row))
+        def sudoku_grid():
+            cell_index = 0
+            for row in range (1,10):
+                this_row = []
+                for col in range (1,10):
+                    c = ft.Container(
+						content=ft.Text("__"),
+						width=20,
+						height=20,
+						bgcolor="blue",
+						ink=False,
+						data= {"cell_index": cell_index,
+								"cell_row": row,
+								"cell_col": col,
+								"cell_box": box_of(row,col),
+								"cell_current_value": '',
+                                "cell_bgcolor": "blue",
+                                "cell_highlighted": False,
+								"cell_value_source": ''},
+						on_click=cell_click,
+						)
+                    cell_index += 1
+
+                    cell_containers.append(c)
+                    this_row.append(c)
+
+                page.add(ft.Row(this_row))
+
+        sudoku_grid()
+
+        set_numbers = []
+        for number in sudoku_numbers:
+            c = ft.Container(
+				    content=ft.Text(number),
+					width=20,
+					height=20,
+					bgcolor="white",
+					ink=False,
+					data= {
+						"sudoku_number": number,
+                        "bgcolor": "white",
+                        },
+					on_click=user_set_number,
+					)
+
+            set_numbers.append(c)
+        page.add(ft.Row(set_numbers))
 
         page.add(
             ft.TextField(ref=new_value, 
