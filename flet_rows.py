@@ -1,6 +1,6 @@
 import flet as ft
 
-if __name__ == "__main__" or True:
+if __name__ == "__main__":
 
     def main(page: ft.Page):
 
@@ -11,6 +11,8 @@ if __name__ == "__main__" or True:
         cell_containers = []
         cell_index = 0
         sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
+        set_cell_value  = ''
+        action_to_take = 'no action set'
 
 
         new_value = ft.TextField(label='1-9', autofocus=True)
@@ -85,21 +87,32 @@ if __name__ == "__main__" or True:
 
         def row_needs(row):
             print ("row_needs", row)
-        
-        def user_set_number(e):
-            global cell_containers
-            global cell_index
 
-            new_value=e.control.data["sudoku_number"]
-            print ("new_value=", new_value, sudoku_numbers)
-            print (new_value in sudoku_numbers)
-            if new_value in sudoku_numbers:
-                cell_containers[cell_index].content = ft.Text(new_value)
-                cell_containers[cell_index].data["cell_current_value"] = new_value
-                cell_containers[cell_index].data["cell_value_source"] = "cell_click"
-                cell_containers[cell_index].bgcolor=ft.colors="green"
+        def set_number_to(e):
+            global set_cell_value  
+            global action_to_take  
 
+            set_cell_value = e.control.data["sudoku_number"]
+            action_to_take= 'set_cell_to'
             page.update()
+
+        def cell_clicked(e):
+            global set_cell_value
+            global action_to_take  
+            
+            if action_to_take == "no action set":
+                return
+
+            elif action_to_take == "set_cell_to":
+                e.content = ft.Text(set_cell_value)
+                e.control.data["cell_current_value"] = set_cell_value
+                e.control.data["cell_value_source"] = "set_cell_to"
+                e.bgcolor=ft.colors="green"
+
+                page.update()
+
+            else:
+                return    
 
         def sudoku_grid():
             global cell_containers
@@ -123,7 +136,7 @@ if __name__ == "__main__" or True:
                                 "cell_bgcolor": "blue",
                                 "cell_highlighted": False,
 								"cell_value_source": ''},
-						on_click=cell_click,
+						on_click=cell_clicked,
 						)
                     cell_index += 1
 
@@ -133,6 +146,11 @@ if __name__ == "__main__" or True:
                 page.add(ft.Row(this_row))
 
         sudoku_grid()
+
+        action_to_take = ft.TextField(label="action to take", width=300)
+        action_to_take.value = "no action set"
+        page.add( action_to_take)
+                
 
         set_numbers = []
         for number in sudoku_numbers:
@@ -146,16 +164,10 @@ if __name__ == "__main__" or True:
 						"sudoku_number": number,
                         "bgcolor": "white",
                         },
-					on_click=user_set_number,
+					on_click=set_number_to,
 					)
 
             set_numbers.append(c)
         page.add(ft.Row(set_numbers))
-
-        page.add(
-            ft.TextField(ref=new_value, 
-                         label="Action 1-9 set, rn=row_needs, cn=col_needs, bn=box_needs", 
-                         autofocus=True, width=200),
-            )
 
     ft.app(target=main)
