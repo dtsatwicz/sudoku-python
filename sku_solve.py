@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
         result = ft.Text(value='0')
         new_cell_value = ft.Text(value='0')
-        action_to_take = ft.Text(value='no action set')
+        action_to_take = ft.Text(value='No Action Set')
         next_cell_value = ''
         new_number = ''
 
@@ -43,10 +43,14 @@ if __name__ == "__main__":
 
         def number_clicked(e):
             global next_cell_value
+            ###global action_to_take
             global new_number
 
             print ('number_clicked', e.control.data)
-            action_to_take = 'set_cell_to'
+
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text('Set Cell To'))
+            page.update()
 
             new_number = e.control.data["sudoku_number"]
 
@@ -92,7 +96,7 @@ if __name__ == "__main__":
                 ##ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'),
                 ##)
             page.add(ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')))
-            page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'))
+            page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data=ft.Text('__')))
 
             set_numbers = []        
             for number in sudoku_numbers:
