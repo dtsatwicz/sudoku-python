@@ -11,6 +11,7 @@ if __name__ == "__main__":
 
         result = ft.Text(value='0')
         new_cell_value = ft.Text(value='0')
+        action_to_take = ft.Text(value='no action set')
         next_cell_value = ''
         new_number = ''
 
@@ -57,6 +58,7 @@ if __name__ == "__main__":
         def sudoku_grid():
             global cell_containers
             global cell_index
+
             cell_containers=[]
             cell_index = 0
             for row in range (1,10):
@@ -85,9 +87,12 @@ if __name__ == "__main__":
 
                 page.add(ft.Row(this_row))
 
-            page.add(
-                ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'),
-                )
+            ##page.add(
+                ##ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')),
+                ##ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'),
+                ##)
+            page.add(ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')))
+            page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'))
 
             set_numbers = []        
             for number in sudoku_numbers:
