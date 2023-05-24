@@ -54,20 +54,18 @@ if __name__ == "__main__":
         def cell_click(e):
             global cell_index
 
-            if e.control.data["cell_highlighted"]==True:
+            if e.control.data["cell_highlighted"]==True: 
                 e.control.data["cell_highlighted"]=False
                 e.control.bgcolor = ft.color=e.control.data["cell_bgcolor"]
             else:
                 e.control.bgcolor=ft.colors="red"
                 e.control.data["cell_highlighted"]=True
                 cell_index = e.control.data["cell_index"]
-            update()
+            page.update()
 
-        def action_click():
-            global cell_containers
-            global cell_index
+        def action_click(self,e):
 
-            print (cell_index, cell_containers[cell_index])
+            print (self.cell_index, self.cell_containers[self.cell_index])
             print ("new_value=", new_value.current.value)
             if new_value.current.value in sudoku_numbers:
                 cell_containers[cell_index].control.content = ft.Text(new_value.current.value)
@@ -94,14 +92,6 @@ if __name__ == "__main__":
 
         def row_needs(row):
             print ("row_needs", row)
-
-        def number_clicked(e):
-            global new_cell_value  
-            global action_to_take
-
-            new_cell_value.value = e.control.data["sudoku_number"]
-            action_to_take.value = 'set_cell_to'
-            page.update()
 
         def cell_clicked(e):
             global new_cell_value
@@ -154,29 +144,47 @@ if __name__ == "__main__":
 
         sudoku_grid()
 
-        action_row = []
-        action_row.append(action_to_take)
-        action_row.append(new_cell_value)
-        page.add(ft.Row(action_row))
+        def number1_clicked(e):
+            ##global new_cell_value  
+            ##global action_to_take
 
-        set_numbers = []        
-        valid_numbers = sudoku_numbers
-        valid_numbers.append("__")
-        for number in valid_numbers:
+            action_to_take = 'set_cell_to'
+            new_cell_value = '1'
+            page.update()
+
+        def control_commands():
+
+            page.add(
+                ft.Row(controls=[action_to_take],ref=action_to_take,data='no action set'),
+                )
+            page.add(
+                ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'),
+                )
+            ##action_row.append(new_cell_value)
+            ##page.add(ft.Row(action_row))
+            ## page.add(
+            ##     ft.Row(controls=[result],ref=result,data=0),
+
+            ##valid_numbers = sudoku_numbers
+            ##valid_numbers.append("__")
+            ##for number in valid_numbers:
+            set_numbers = []        
             c = ft.Container(
-				    content=ft.Text(number),
-					width=20,
-					height=20,
-					bgcolor="white",
-					ink=False,
+    				content=ft.Text('1'),
+    				width=20,
+    				height=20,
+    				bgcolor="white",
+    				ink=False,
 					data= {
-						"sudoku_number": number,
+    					"sudoku_number": '1',
                         "bgcolor": "white",
                         },
-					on_click=number_clicked,
-					)
+    				on_click=number1_clicked,
+    				)
 
             set_numbers.append(c)
-        page.add(ft.Row(set_numbers))
+            page.add(ft.Row(set_numbers))
+        control_commands()
+
 
     ft.app(target=main)
