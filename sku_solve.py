@@ -11,7 +11,8 @@ if __name__ == "__main__":
 
         result = ft.Text(value='0')
         new_cell_value = ft.Text(value='0')
-        action_to_take = ft.Text(value='No Action Set')
+        text_action_to_take = 'No Action Set'
+        action_to_take = ft.Text(value=text_action_to_take)
         next_cell_value = ''
         new_number = ''
 
@@ -33,23 +34,32 @@ if __name__ == "__main__":
         def cell_clicked(e):
             global next_cell_value
             global new_number
+            global text_action_to_take
             print ('cell_clicked', e.control.data)
-            print ('new_cell_value=', next_cell_value, new_number)
+            print ('cell_clicked', next_cell_value, new_number)
 
-            e.control.content = ft.Text(next_cell_value)
-            e.control.bfcolor="red"
+            if text_action_to_take == 'No Action Set':
+                print ('No Action Set')
+            
+            elif text_action_to_take == 'Set Cell To':
+                e.control.content = ft.Text(next_cell_value)
+                e.control.bfcolor="red"
+                page.update()
+            
+            else:
+                print (text_action_to_take, ' is not implimented', )
 
-            page.update()
 
         def number_clicked(e):
             global next_cell_value
-            ###global action_to_take
+            global text_action_to_take
             global new_number
 
             print ('number_clicked', e.control.data)
 
+            text_action_to_take = "Set Cell To"
             action_to_take.current.controls.clear()
-            action_to_take.current.controls.append(ft.Text('Set Cell To'))
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
             page.update()
 
             new_number = e.control.data["sudoku_number"]
@@ -91,10 +101,6 @@ if __name__ == "__main__":
 
                 page.add(ft.Row(this_row))
 
-            ##page.add(
-                ##ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')),
-                ##ft.Row(controls=[new_cell_value],ref=new_cell_value,data='__'),
-                ##)
             page.add(ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')))
             page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data=ft.Text('__')))
 
