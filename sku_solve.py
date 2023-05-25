@@ -51,6 +51,18 @@ if __name__ == "__main__":
                 row_can_be(e)
                 page.update()
             
+            elif text_action_to_take == 'Run Col Can Be':
+                col_can_be(e)
+                page.update()
+            
+            elif text_action_to_take == 'Run Box Can Be':
+                box_can_be(e)
+                page.update()
+            
+            elif text_action_to_take == 'Run All Can Be':
+                all_can_be(e)
+                page.update()
+            
             else:
                 print (text_action_to_take, ' is not implimented', )
 
