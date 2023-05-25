@@ -6,7 +6,7 @@ if __name__ == "__main__":
     def main(page: ft.Page):
 
         page.title="Sudoku"
-        page.window_height=400
+        page.window_height=500
         page.window_width=300
 
         result = ft.Text(value='0')
@@ -69,6 +69,18 @@ if __name__ == "__main__":
             next_cell_value = new_number
             page.update()
 
+        def row_can_be(e):
+            print ('row_can_be')
+
+        def cel_can_be(e):
+            print ('cel_can_be')
+
+        def box_can_be(e):
+            print ('box_can_be')
+
+        def all_can_be(e):
+            print ('all_can_be')
+
         def sudoku_grid():
             global cell_containers
             global cell_index
@@ -121,6 +133,17 @@ if __name__ == "__main__":
 
                 set_numbers.append(c)
             page.add(ft.Row(set_numbers))
+
+            page.add(
+	        	ft.Row(
+	        		controls=[
+	        			ft.ElevatedButton(text='Row',on_click=row_can_be),
+	        			ft.ElevatedButton(text='Col',on_click=cel_can_be),
+	        			ft.ElevatedButton(text='Box',on_click=box_can_be),
+	        			ft.ElevatedButton(text='All3',on_click=all_can_be),
+	            		]
+	                ),
+                )    
 
         sudoku_grid()
 
