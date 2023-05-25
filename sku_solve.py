@@ -35,8 +35,9 @@ if __name__ == "__main__":
             global next_cell_value
             global new_number
             global text_action_to_take
-            print ('cell_clicked', e.control.data)
-            print ('cell_clicked', next_cell_value, new_number)
+            #print ('cell_clicked', e.control.data)
+            #print ('cell_clicked', next_cell_value, new_number)
+            print ('cell_clicked', text_action_to_take)
 
             if text_action_to_take == 'No Action Set':
                 print ('No Action Set')
@@ -44,6 +45,10 @@ if __name__ == "__main__":
             elif text_action_to_take == 'Set Cell To':
                 e.control.content = ft.Text(next_cell_value)
                 e.control.bfcolor="red"
+                page.update()
+            
+            elif text_action_to_take == 'Run Row Can Be':
+                row_can_be(e)
                 page.update()
             
             else:
@@ -69,11 +74,47 @@ if __name__ == "__main__":
             next_cell_value = new_number
             page.update()
 
+        def click_row_can_be(e):
+            global text_action_to_take
+            print ('click_row_can_be')
+            text_action_to_take = "Run Row Can Be"
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
+            #new_cell_value.current.controls.clear()
+            page.update()
+
+        def click_col_can_be(e):
+            global text_action_to_take
+            print ('click_col_can_be')
+            text_action_to_take = "Run Col Can Be"
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
+            #new_cell_value.current.controls.clear()
+            page.update()
+
+        def click_box_can_be(e):
+            global text_action_to_take
+            print ('click_box_can_be')
+            text_action_to_take = "Run Box Can Be"
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
+            #new_cell_value.current.controls.clear()
+            page.update()
+
+        def click_all_can_be(e):
+            global text_action_to_take
+            print ('click_all_can_be')
+            text_action_to_take = "Run All Can Be"
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
+            #new_cell_value.current.controls.clear()
+            page.update()
+
         def row_can_be(e):
             print ('row_can_be')
 
-        def cel_can_be(e):
-            print ('cel_can_be')
+        def col_can_be(e):
+            print ('col_can_be')
 
         def box_can_be(e):
             print ('box_can_be')
@@ -137,10 +178,10 @@ if __name__ == "__main__":
             page.add(
 	        	ft.Row(
 	        		controls=[
-	        			ft.ElevatedButton(text='Row',on_click=row_can_be),
-	        			ft.ElevatedButton(text='Col',on_click=cel_can_be),
-	        			ft.ElevatedButton(text='Box',on_click=box_can_be),
-	        			ft.ElevatedButton(text='All3',on_click=all_can_be),
+	        			ft.ElevatedButton(text='Row',on_click=click_row_can_be),
+	        			ft.ElevatedButton(text='Col',on_click=click_col_can_be),
+	        			ft.ElevatedButton(text='Box',on_click=click_box_can_be),
+	        			ft.ElevatedButton(text='All3',on_click=click_all_can_be),
 	            		]
 	                ),
                 )    
