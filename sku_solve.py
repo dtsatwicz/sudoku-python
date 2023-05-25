@@ -48,7 +48,7 @@ if __name__ == "__main__":
                 page.update()
             
             elif text_action_to_take == 'Run Row Can Be':
-                row_can_be(e)
+                row_can_be(e.control.data)
                 page.update()
             
             elif text_action_to_take == 'Run Col Can Be':
@@ -122,8 +122,15 @@ if __name__ == "__main__":
             #new_cell_value.current.controls.clear()
             page.update()
 
-        def row_can_be(e):
+        def row_can_be(data):
+            global cells_in_row
+            global cells_in_col
+            global cells_in_box
+
             print ('row_can_be')
+            print ('row_can_be', 'cell_row=', data["cell_row"], 
+                   'cell_box=', data["cell_box"], data["cell_index"])
+            print ('cells_in_row', cells_in_row[data["cell_row"]])
 
         def col_can_be(e):
             print ('col_can_be')
@@ -138,11 +145,20 @@ if __name__ == "__main__":
             global cell_containers
             global cell_index
 
+            global cells_in_row
+            global cells_in_col
+            global cells_in_box
+
+            cells_in_row = [[],[],[],[],[],[],[],[],[],[]]
+            cells_in_col = [[],[],[],[],[],[],[],[],[],[]]
+            cells_in_box = [[],[],[],[],[],[],[],[],[],[]]
+
             cell_containers=[]
             cell_index = 0
             for row in range (1,10):
                 this_row = []
                 for col in range (1,10):
+                    box = box_of(row,col)
                     c = ft.Container(
 						content=ft.Text("__"),
 						width=20,
@@ -152,13 +168,17 @@ if __name__ == "__main__":
 						data= {"cell_index": cell_index,
 								"cell_row": row,
 								"cell_col": col,
-								"cell_box": box_of(row,col),
+								"cell_box": box,
 								"cell_current_value": '',
                                 "cell_bgcolor": "blue",
                                 "cell_highlighted": False,
 								"cell_value_source": ''},
 						on_click=cell_clicked,
 						)
+
+                    cells_in_row[row].append(cell_index)    
+                    cells_in_col[col].append(cell_index)    
+                    cells_in_box[box].append(cell_index)    
                     cell_index += 1
 
                     cell_containers.append(c)
