@@ -146,23 +146,26 @@ if __name__ == "__main__":
             global next_cell_value
             global cell_containers
 
+            init_values = '81.4...5.' + '......9..' + '92.7...18' \
+                        + '5..9.....' + '.92...57.' + '.....4..6' \
+                        + '26...8.45' + '..7......' + '.8...5.63'
+
             print ("click_init" )
 
-            ##if next_cell_value == '1':
-            if '1' == '1':
-                for cell_index in range (81):
-                    print ('click_init', cell_index, cell_containers[cell_index].content)
-                    cell_containers[cell_index].content = ft.Text("__")
-                    cell_containers[cell_index].bgcolor="green"
-                    cell_containers.control.data[
-								"cell_current_value": '',
-                                "cell_bgcolor": "blue",
-                                "cell_highlighted": False,
-								"cell_value_source": ''],
+            for cell_index in range (81):
 
-                    page.update()
-            ##page.update()
-            pass
+                text_new_value = init_values[cell_index]
+                if text_new_value == '.': text_new_value = '__'
+
+                print ('click_init', cell_index, cell_containers[cell_index].content)
+                cell_containers[cell_index].content = ft.Text(text_new_value)
+                cell_containers[cell_index].bgcolor="green"
+                ##cell_containers[cell_index].data[
+				##				"cell_current_value": '',
+                ##                "cell_bgcolor": "blue",
+                ##                "cell_highlighted": False,
+				##				"cell_value_source": ''],
+                page.update()
 
         def sudoku_grid():
             global cell_containers
