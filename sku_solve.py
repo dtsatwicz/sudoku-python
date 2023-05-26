@@ -15,6 +15,7 @@ if __name__ == "__main__":
         action_to_take = ft.Text(value=text_action_to_take)
         next_cell_value = ''
         new_number = ''
+        cell_containers=[]
 
         sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
 
@@ -141,6 +142,28 @@ if __name__ == "__main__":
         def all_can_be(e):
             print ('all_can_be')
 
+        def click_init(e):
+            global next_cell_value
+            global cell_containers
+
+            print ("click_init" )
+
+            ##if next_cell_value == '1':
+            if '1' == '1':
+                for cell_index in range (81):
+                    print ('click_init', cell_index, cell_containers[cell_index].content)
+                    cell_containers[cell_index].content = ft.Text("__")
+                    cell_containers[cell_index].bgcolor="green"
+                    cell_containers.control.data[
+								"cell_current_value": '',
+                                "cell_bgcolor": "blue",
+                                "cell_highlighted": False,
+								"cell_value_source": ''],
+
+                    page.update()
+            ##page.update()
+            pass
+
         def sudoku_grid():
             global cell_containers
             global cell_index
@@ -198,7 +221,7 @@ if __name__ == "__main__":
     				    bgcolor="green",
     				    ink=False,
 					    data= {
-    					    "sudoku_number": number,
+    					   "sudoku_number": number,
                            "bgcolor": "green",
                             },
     				    on_click=number_clicked,
@@ -214,9 +237,19 @@ if __name__ == "__main__":
 	        			ft.ElevatedButton(text='Col',on_click=click_col_can_be),
 	        			ft.ElevatedButton(text='Box',on_click=click_box_can_be),
 	        			ft.ElevatedButton(text='All3',on_click=click_all_can_be),
+	        			ft.ElevatedButton(text='Init',on_click=click_init),
 	            		]
 	                ),
                 )    
+
+            page.add(
+	        	ft.Row(
+	        		controls=[
+	        			ft.ElevatedButton(text='Init',on_click=click_init),
+	            		]
+	                ),
+                )    
+
 
         sudoku_grid()
 
