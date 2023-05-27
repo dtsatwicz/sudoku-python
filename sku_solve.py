@@ -234,6 +234,7 @@ if __name__ == "__main__":
 
             for row_cell in cells_in_row(row):
                 cell_current_value = cell_containers[row_cell].data["cell_current_value"]
+                col = cell_containers[row_cell].data["cell_col"]
             
                 if cell_current_value != "__":
                     continue
@@ -244,29 +245,31 @@ if __name__ == "__main__":
                     can_be_count = 0
                     can_be_cell_index=0
 
-                    for col_cell in cells_in_col(row_cell):
+                    col_cells = cells_in_col(col)
+                    for col_cell in col_cells:
                         this_cell_value = cell_containers[col_cell].data["cell_current_value"]
                         print ('col_index=', col_cell, 
                                this_cell_value,
                                'this_cell_value=',cell_containers[col_cell].data["cell_current_value"],
                                )
-                        if this_cell_value in row_has:
+                        if this_cell_value == needs:
                             can_be = False
                             continue
-                    can_be_count += 1
 
-                    for box_cell in cells_in_box(row_cell):
+                    box =  box_of(row,col)
+                    for box_cell in cells_in_box(box):
                         cell_current_value = cell_containers[box_cell].data["cell_current_value"]
                         this_cell_value = cell_containers[box_cell].data["cell_current_value"]
-                        print ('box=index=', box_cell, 
-                           cell_current_value,
-                           'cell_current_value=',cell_containers[box_cell].data["cell_current_value"],
-                           )
+                        print ('box=index=', box_cell, cell_current_value,
+                               'cell_current_value=',cell_containers[box_cell].data["cell_current_value"],
+                              )
                         if this_cell_value in row_has:
                             can_be = False
                             continue
-                    can_be_count += 1
-                    new_value = needs
+
+                    if can_be:
+                        can_be_count += 1
+                        new_value = needs
 
             if can_be == 1:
                 print ('new value found', new_value, )
@@ -308,6 +311,7 @@ if __name__ == "__main__":
                 cell_containers[cell_index].content = ft.Text(text_new_value)
                 cell_containers[cell_index].bgcolor="green"
                 cell_containers[cell_index].data["cell_current_value"] = text_new_value
+
                 page.update()
 
         def sudoku_grid():
