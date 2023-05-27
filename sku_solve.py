@@ -19,6 +19,45 @@ if __name__ == "__main__":
 
         def sudoku_numbers():  
             return ['1','2','3','4','5','6','7','8','9']
+        
+        def row_of_cell_index(index):
+            row = [1,1,1,1,1,1,1,1,1,
+                   2,2,2,2,2,2,2,2,2,
+                   3,3,3,3,3,3,3,3,3,
+                   4,4,4,4,4,4,4,4,4,
+                   5,5,5,5,5,5,5,5,5,
+                   6,6,6,6,6,6,6,6,6,
+                   7,7,7,7,7,7,7,7,7,
+                   8,8,8,8,8,8,8,8,8,
+                   9,9,9,9,9,9,9,9,9,
+                   ]
+            return row[index]
+
+        def col_of_cell_index(index):
+            col = [1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   1,2,3,4,5,6,7,8,9,
+                   ]
+            return col[index]
+
+        def box_of_cell_index(index):
+            box = [1,1,1,2,2,2,3,3,3,
+                   1,1,1,2,2,2,3,3,3,
+                   1,1,1,2,2,2,3,3,3,
+                   4,4,4,5,5,5,6,6,6,
+                   4,4,4,5,5,5,6,6,6,
+                   4,4,4,5,5,5,6,6,6,
+                   7,7,7,8,8,8,9,9,9,
+                   7,7,7,8,8,8,9,9,9,
+                   7,7,7,8,8,8,9,9,9,
+                   ]
+            return box[index]
 
         def box_of(row, col):
             if row in range (1,4):
@@ -159,22 +198,24 @@ if __name__ == "__main__":
             for cell_index in cell_indexes:
                 cell_current_value = cell_containers[cell_index].data["cell_current_value"]
                 
+                col = col_of_cell_index(cell_index)
+                box = box_of_cell_index(cell_index)
                 if cell_current_value == "__":
+                    can_be_count = 0
                     for need in needed:
-                        can_be_count = 0
-                        cells = cells_in_col[data["cell_col"]]
+                        cells = cells_in_col[col]
                         for cell in cells:
                             already_has = cell_containers[cell].data["cell_current_value"] 
                             if already_has != need and already_has != "__": 
                                 can_be_count += 1
-                        cells = cells_in_box[data["cell_box"]]
+                        cells = cells_in_box[box]
                         for cell in cells:
                             already_has = cell_containers[cell].data["cell_current_value"] 
                             if already_has != need and already_has != "__": 
                                 can_be_count += 1
                     
-                        if can_be_count == 1:
-                            print ('row_can_be found', index, need, cell_index ) 
+                    if can_be_count == 1:
+                        print ('row_can_be found', index, need, cell_index ) 
 
             
             pass
@@ -252,9 +293,6 @@ if __name__ == "__main__":
 								"cell_current_value": '',
                                 "cell_bgcolor": "blue",
                                 "cell_highlighted": False,
-        "cells_in_row"
-        "cells_in_col"
-        "cells_in_box"
 								"cell_value_source": ''},
 						on_click=cell_clicked,
 						)
