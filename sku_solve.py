@@ -20,44 +20,89 @@ if __name__ == "__main__":
         def sudoku_numbers():  
             return ['1','2','3','4','5','6','7','8','9']
         
-        def row_of_cell_index(index):
-            row = [1,1,1,1,1,1,1,1,1,
-                   2,2,2,2,2,2,2,2,2,
-                   3,3,3,3,3,3,3,3,3,
-                   4,4,4,4,4,4,4,4,4,
-                   5,5,5,5,5,5,5,5,5,
-                   6,6,6,6,6,6,6,6,6,
-                   7,7,7,7,7,7,7,7,7,
-                   8,8,8,8,8,8,8,8,8,
-                   9,9,9,9,9,9,9,9,9,
+        def cells_in_row(row):
+            cells = [[],
+                     [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
+                     [ 9,10,11,12,13,14,15,16,17],
+                     [18,19,20,21,22,23,24,25,26],
+                     [27,28,29,30,31,32,33,34,35],
+                     [36,37,38,39,40,41,42,43,44],
+                     [45,46,47,48,49,50,51,52,53],
+                     [54,55,56,57,58,59,60,61,62],
+                     [63,64,65,66,67,68,69,70,71],
+                     [72,73,74,75,76,77,78,79,80],
+                     ]
+            return cells[row]
+                     
+        def cells_in_col(col):
+            cells = [[],
+                     [ 0, 9,18,27,36,45,54,63,72],
+                     [ 1,10,19,28,37,46,55,64,73],
+                     [ 2,11,20,29,38,47,56,65,74],
+                     [ 3,12,21,30,39,48,57,66,75],
+                     [ 4,13,22,31,40,49,58,67,76],
+                     [ 5,14,23,32,41,50,59,68,77],
+                     [ 6,15,24,33,42,51,60,69,78],
+                     [ 7,16,25,34,43,52,61,70,79],
+                     [ 8,17,26,35,44,53,62,71,80],
+                     ]
+            return cells[col]
+                     
+        def cells_in_box(box):
+            cells = [[],
+                     [ 0, 1, 2, 9,10,11,18,19,20],
+                     [ 3, 4, 5,12,13,14,21,22,23],
+                     [ 6, 7, 8,15,16,17,24,25,26],
+                     [27,28,29,36,37,38,45,46,47],
+                     [30,31,32,39,40,41,48,49,50],
+                     [33,34,35,42,43,44,51,52,53], 
+                     [54,55,56,63,64,65,72,73,74],
+                     [57,58,59,66,67,68,75,76,77],
+                     [60,61,62,69,70,71,78,79,80],
+                     ]
+            return cells[box]
+                     
+        def rows_of_cell_index(cell_index):
+            rows = [[],
+                    [1,1,1,1,1,1,1,1,1],
+                    [2,2,2,2,2,2,2,2,2],
+                    [3,3,3,3,3,3,3,3,3],
+                    [4,4,4,4,4,4,4,4,4],
+                    [5,5,5,5,5,5,5,5,5],
+                    [6,6,6,6,6,6,6,6,6],
+                    [7,7,7,7,7,7,7,7,7],
+                    [8,8,8,8,8,8,8,8,8],
+                    [9,9,9,9,9,9,9,9,9],
                    ]
-            return row[index]
+            return rows[cell_index]
 
-        def col_of_cell_index(index):
-            col = [1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
-                   1,2,3,4,5,6,7,8,9,
+        def cols_of_cell_index(cell_index):
+            cols = [[],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
+                    [1,2,3,4,5,6,7,8,9],
                    ]
-            return col[index]
+            return cols[cell_index]
 
-        def box_of_cell_index(index):
-            box = [1,1,1,2,2,2,3,3,3,
-                   1,1,1,2,2,2,3,3,3,
-                   1,1,1,2,2,2,3,3,3,
-                   4,4,4,5,5,5,6,6,6,
-                   4,4,4,5,5,5,6,6,6,
-                   4,4,4,5,5,5,6,6,6,
-                   7,7,7,8,8,8,9,9,9,
-                   7,7,7,8,8,8,9,9,9,
-                   7,7,7,8,8,8,9,9,9,
+        def boxs_of_cell_index(cell_index):
+            boxs = [[],
+                    [1,1,1,2,2,2,3,3,3],
+                    [1,1,1,2,2,2,3,3,3],
+                    [1,1,1,2,2,2,3,3,3],
+                    [4,4,4,5,5,5,6,6,6],
+                    [4,4,4,5,5,5,6,6,6],
+                    [4,4,4,5,5,5,6,6,6],
+                    [7,7,7,8,8,8,9,9,9],
+                    [7,7,7,8,8,8,9,9,9],
+                    [7,7,7,8,8,8,9,9,9],
                    ]
-            return box[index]
+            return boxs[cell_index]
 
         def box_of(row, col):
             if row in range (1,4):
@@ -164,59 +209,67 @@ if __name__ == "__main__":
             page.update()
 
         def row_can_be(data):
-            global cells_in_row
-            global cells_in_col
-            global cells_in_box
             global cell_containers
 
-            print ('row_can_be')
+            row = data["cell_row"]
+
+            print ('row_can_be', row)
             print ('row_can_be', 'cell_row=', data["cell_row"], 'cell_col=', data["cell_col"], 
                    'cell_box=', data["cell_box"], data["cell_index"])
-            print ('cells_in_row', cells_in_row[data["cell_row"]])
+            print ('cells_in_row', cells_in_row(data["cell_row"]))
 
-            needed=[]
-            not_needed=[]
-            print ('row_can_be', sudoku_numbers())
-            
-            needed= sudoku_numbers()
-            print ('row_can_be needed=', needed)
+            row_has=[]
+            row_needs = sudoku_numbers()
+            row_cells = cells_in_row(row)
+            for row_cell in row_cells:
 
-            for index in cells_in_row[data["cell_row"]]:
-                cell_current_value = cell_containers[index].data["cell_current_value"]
-                print ('index=', index, 
+                cell_current_value = cell_containers[row_cell].data["cell_current_value"]
+                print ('row_cell=', row_cell, 
                        cell_current_value,
-                       'cell_current_value=',cell_containers[index].data["cell_current_value"],
+                       'cell_current_value=',cell_containers[row_cell].data["cell_current_value"],
                        )
                 if cell_current_value != "__":
-                    not_needed.append(cell_current_value)
-                    needed.remove ( cell_current_value)
+                    row_has.append(cell_current_value)
+                    row_needs.remove (cell_current_value)
 
-            print ('row_can_be     needed=',     needed)
-            print ('row_can_be not_needed=', not_needed)
+            for row_cell in cells_in_row(row):
+                cell_current_value = cell_containers[row_cell].data["cell_current_value"]
+            
+                if cell_current_value != "__":
+                    continue
 
-            cell_indexes = cells_in_row[data["cell_row"]]
-            for cell_index in cell_indexes:
-                cell_current_value = cell_containers[cell_index].data["cell_current_value"]
-                
-                col = col_of_cell_index(cell_index)
-                box = box_of_cell_index(cell_index)
-                if cell_current_value == "__":
+                for needs in row_needs:
+
+                    can_be = True
                     can_be_count = 0
-                    for need in needed:
-                        cells = cells_in_col[col]
-                        for cell in cells:
-                            already_has = cell_containers[cell].data["cell_current_value"] 
-                            if already_has != need and already_has != "__": 
-                                can_be_count += 1
-                        cells = cells_in_box[box]
-                        for cell in cells:
-                            already_has = cell_containers[cell].data["cell_current_value"] 
-                            if already_has != need and already_has != "__": 
-                                can_be_count += 1
-                    
-                    if can_be_count == 1:
-                        print ('row_can_be found', index, need, cell_index ) 
+                    can_be_cell_index=0
 
+                    for col_cell in cells_in_col(row_cell):
+                        this_cell_value = cell_containers[col_cell].data["cell_current_value"]
+                        print ('col_index=', col_cell, 
+                               this_cell_value,
+                               'this_cell_value=',cell_containers[col_cell].data["cell_current_value"],
+                               )
+                        if this_cell_value in row_has:
+                            can_be = False
+                            continue
+                    can_be_count += 1
+
+                    for box_cell in cells_in_box(row_cell):
+                        cell_current_value = cell_containers[box_cell].data["cell_current_value"]
+                        this_cell_value = cell_containers[box_cell].data["cell_current_value"]
+                        print ('box=index=', box_cell, 
+                           cell_current_value,
+                           'cell_current_value=',cell_containers[box_cell].data["cell_current_value"],
+                           )
+                        if this_cell_value in row_has:
+                            can_be = False
+                            continue
+                    can_be_count += 1
+                    new_value = needs
+
+            if can_be == 1:
+                print ('new value found', new_value, )
             
             pass
 
@@ -255,24 +308,11 @@ if __name__ == "__main__":
                 cell_containers[cell_index].content = ft.Text(text_new_value)
                 cell_containers[cell_index].bgcolor="green"
                 cell_containers[cell_index].data["cell_current_value"] = text_new_value
-                ##cell_containers[cell_index].data[
-				##				"cell_current_value": '',
-                ##                "cell_bgcolor": "blue",
-                ##                "cell_highlighted": False,
-				##				"cell_value_source": ''],
                 page.update()
 
         def sudoku_grid():
             global cell_containers
             global cell_index
-
-            global cells_in_row
-            global cells_in_col
-            global cells_in_box
-
-            cells_in_row = [[],[],[],[],[],[],[],[],[],[]]
-            cells_in_col = [[],[],[],[],[],[],[],[],[],[]]
-            cells_in_box = [[],[],[],[],[],[],[],[],[],[]]
 
             cell_containers=[]
             cell_index = 0
@@ -297,9 +337,6 @@ if __name__ == "__main__":
 						on_click=cell_clicked,
 						)
 
-                    cells_in_row[row].append(cell_index)    
-                    cells_in_col[col].append(cell_index)    
-                    cells_in_box[box].append(cell_index)    
                     cell_index += 1
 
                     cell_containers.append(c)
