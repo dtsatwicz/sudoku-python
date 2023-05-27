@@ -155,27 +155,26 @@ if __name__ == "__main__":
             print ('row_can_be     needed=',     needed)
             print ('row_can_be not_needed=', not_needed)
 
-            for index in cells_in_row[data["cell_row"]]:
-                cell_current_value = cell_containers[index].data["cell_current_value"]
+            cell_indexes = cells_in_row[data["cell_row"]]
+            for cell_index in cell_indexes:
+                cell_current_value = cell_containers[cell_index].data["cell_current_value"]
                 
                 if cell_current_value == "__":
-                    can_be_count = 0
                     for need in needed:
-                       for cell in cells_in_row:
-                           potential = cell_containers[index].data["cell_current_value"] 
-                           if potential in needed:
+                        can_be_count = 0
+                        cells = cells_in_col[data["cell_col"]]
+                        for cell in cells:
+                            already_has = cell_containers[cell].data["cell_current_value"] 
+                            if already_has != need and already_has != "__": 
                                 can_be_count += 1
-                       for cell in cells_in_col:
-                           potential = cell_containers[cell].data["cell_current_value"] 
-                           if potential in needed:
-                                can_be_count += 1
-                       for cell in cells_in_box:
-                           potential = cell_containers[cell].data["cell_current_value"] 
-                           if potential in needed:
+                        cells = cells_in_box[data["cell_box"]]
+                        for cell in cells:
+                            already_has = cell_containers[cell].data["cell_current_value"] 
+                            if already_has != need and already_has != "__": 
                                 can_be_count += 1
                     
-                    if can_be_count == 1:
-                        print ('row_can_be found', index, potential) 
+                        if can_be_count == 1:
+                            print ('row_can_be found', index, need, cell_index ) 
 
             
             pass
@@ -192,10 +191,17 @@ if __name__ == "__main__":
         def click_init(e):
             global next_cell_value
             global cell_containers
+            global test_new_value
 
-            init_values = '81.4...5.' + '......9..' + '92.7...18' \
-                        + '5..9.....' + '.92...57.' + '.....4..6' \
-                        + '26...8.45' + '..7......' + '.8...5.63'
+            ##if next_cell_value == "1":
+            if False:
+                init_values = '81.4...5.' + '......9..' + '92.7...18' \
+                            + '5..9.....' + '.92...57.' + '.....4..6' \
+                            + '26...8.45' + '..7......' + '.8...5.63'
+            else:
+                init_values = '...65....' + '.96..14..' + '...9..3.1' \
+                            + '..5..7.9.' + '.1......6' + '2..1...3.' \
+                            + '5..71.6..' + '.....45..' + '.8.2.....'
 
             print ("click_init" )
 
@@ -246,6 +252,9 @@ if __name__ == "__main__":
 								"cell_current_value": '',
                                 "cell_bgcolor": "blue",
                                 "cell_highlighted": False,
+        "cells_in_row"
+        "cells_in_col"
+        "cells_in_box"
 								"cell_value_source": ''},
 						on_click=cell_clicked,
 						)
