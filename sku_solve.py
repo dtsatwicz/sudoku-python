@@ -17,7 +17,8 @@ if __name__ == "__main__":
         new_number = ''
         cell_containers=[]
 
-        sudoku_numbers = ['1','2','3','4','5','6','7','8','9']
+        def sudoku_numbers():  
+            return ['1','2','3','4','5','6','7','8','9']
 
         def box_of(row, col):
             if row in range (1,4):
@@ -127,19 +128,65 @@ if __name__ == "__main__":
             global cells_in_row
             global cells_in_col
             global cells_in_box
+            global cell_containers
 
             print ('row_can_be')
-            print ('row_can_be', 'cell_row=', data["cell_row"], 
+            print ('row_can_be', 'cell_row=', data["cell_row"], 'cell_col=', data["cell_col"], 
                    'cell_box=', data["cell_box"], data["cell_index"])
             print ('cells_in_row', cells_in_row[data["cell_row"]])
 
-        def col_can_be(e):
+            needed=[]
+            not_needed=[]
+            print ('row_can_be', sudoku_numbers())
+            
+            needed= sudoku_numbers()
+            print ('row_can_be needed=', needed)
+
+            for index in cells_in_row[data["cell_row"]]:
+                cell_current_value = cell_containers[index].data["cell_current_value"]
+                print ('index=', index, 
+                       cell_current_value,
+                       'cell_current_value=',cell_containers[index].data["cell_current_value"],
+                       )
+                if cell_current_value != "__":
+                    not_needed.append(cell_current_value)
+                    needed.remove ( cell_current_value)
+
+            print ('row_can_be     needed=',     needed)
+            print ('row_can_be not_needed=', not_needed)
+
+            for index in cells_in_row[data["cell_row"]]:
+                cell_current_value = cell_containers[index].data["cell_current_value"]
+                
+                if cell_current_value == "__":
+                    can_be_count = 0
+                    for need in needed:
+                       for cell in cells_in_row:
+                           potential = cell_containers[index].data["cell_current_value"] 
+                           if potential in needed:
+                                can_be_count += 1
+                       for cell in cells_in_col:
+                           potential = cell_containers[cell].data["cell_current_value"] 
+                           if potential in needed:
+                                can_be_count += 1
+                       for cell in cells_in_box:
+                           potential = cell_containers[cell].data["cell_current_value"] 
+                           if potential in needed:
+                                can_be_count += 1
+                    
+                    if can_be_count == 1:
+                        print ('row_can_be found', index, potential) 
+
+            
+            pass
+
+        def col_can_be(data):
             print ('col_can_be')
 
-        def box_can_be(e):
+        def box_can_be(data):
             print ('box_can_be')
 
-        def all_can_be(e):
+        def all_can_be(data):
             print ('all_can_be')
 
         def click_init(e):
@@ -157,9 +204,10 @@ if __name__ == "__main__":
                 text_new_value = init_values[cell_index]
                 if text_new_value == '.': text_new_value = '__'
 
-                print ('click_init', cell_index, cell_containers[cell_index].content)
+                ##print ('click_init', cell_index, cell_containers[cell_index].content)
                 cell_containers[cell_index].content = ft.Text(text_new_value)
                 cell_containers[cell_index].bgcolor="green"
+                cell_containers[cell_index].data["cell_current_value"] = text_new_value
                 ##cell_containers[cell_index].data[
 				##				"cell_current_value": '',
                 ##                "cell_bgcolor": "blue",
@@ -216,10 +264,11 @@ if __name__ == "__main__":
             page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data=ft.Text('__')))
 
             set_numbers = []        
-            for number in sudoku_numbers:
+
+            for number in sudoku_numbers() + ['__']:
                 c = ft.Container(
     				    content=ft.Text(number),
-    			    	width=20,
+    			    	width=18,
     				    height=20,
     				    bgcolor="green",
     				    ink=False,
