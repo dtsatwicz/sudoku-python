@@ -217,7 +217,7 @@ if __name__ == "__main__":
 
             row = data["cell_row"]
 
-            print ('row_can_be', row)
+            print ('row_can_be1', row)
 
             row_has=[]
             row_needs = sudoku_numbers()
@@ -233,10 +233,14 @@ if __name__ == "__main__":
                     row_has.append(cell_current_value)
                     row_needs.remove (cell_current_value)
 
+            print ('row_can_be2', row, 'row_needs ', row_needs)
+             
             for row_cell in cells_in_row(row):
                 cell_current_value = cell_containers[row_cell].data["cell_current_value"]
                 col = cell_containers[row_cell].data["cell_col"]
             
+                print ('row_can_be3 row, col ', row, col, cell_current_value)
+
                 if cell_current_value != "__":
                     continue
 
@@ -250,8 +254,12 @@ if __name__ == "__main__":
                     can_be_count = 0
                     cannot_reason = ''
 
+                    print ('row_can_be row4, col needs', row, col, needs, ' of row_needs', row_needs)
+
                     for col_cell in col_cells:
                         this_cell_value = cell_containers[col_cell].data["cell_current_value"]
+
+                        print ('row_can_be row5, col col_cell', row, col, needs, col_cell, this_cell_value)
 
                         if this_cell_value == needs:
                             can_be = False
@@ -275,6 +283,9 @@ if __name__ == "__main__":
 
                     if can_be:
                         can_be_count += 1
+                        print ('new value found can be', row, col, needs, can_be_count)
+                        if can_be_count > 1: 
+                            break
 
                 if can_be == 1:
                     print ('new value found', needs, row, col )
@@ -397,5 +408,7 @@ if __name__ == "__main__":
 
 
         sudoku_grid()
+
+        click_init(1)
 
     ft.app(target=main)
