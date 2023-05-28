@@ -104,6 +104,11 @@ if __name__ == "__main__":
                    ]
             return boxs[cell_index]
 
+        def col_of_cell_index(cell_index):
+            global cell_containers
+            col = cell_containers[cell_index].data["cell_col"]
+            return col
+
         def box_of(row, col):
             if row in range (1,4):
                 if col in range (1,4): return 1
@@ -121,8 +126,7 @@ if __name__ == "__main__":
             global next_cell_value
             global new_number
             global text_action_to_take
-            #print ('cell_clicked', e.control.data)
-            #print ('cell_clicked', next_cell_value, new_number)
+
             print ('cell_clicked', text_action_to_take)
 
             if text_action_to_take == 'No Action Set':
@@ -214,9 +218,6 @@ if __name__ == "__main__":
             row = data["cell_row"]
 
             print ('row_can_be', row)
-            print ('row_can_be', 'cell_row=', data["cell_row"], 'cell_col=', data["cell_col"], 
-                   'cell_box=', data["cell_box"], data["cell_index"])
-            print ('cells_in_row', cells_in_row(data["cell_row"]))
 
             row_has=[]
             row_needs = sudoku_numbers()
@@ -239,41 +240,46 @@ if __name__ == "__main__":
                 if cell_current_value != "__":
                     continue
 
+                col_cells = cells_in_col(col)
+                box =  box_of(row,col)
+                box_cells = cells_in_box(box)
+                
                 for needs in row_needs:
 
                     can_be = True
                     can_be_count = 0
-                    can_be_cell_index=0
+                    cannot_reason = ''
 
-                    col_cells = cells_in_col(col)
                     for col_cell in col_cells:
                         this_cell_value = cell_containers[col_cell].data["cell_current_value"]
-                        print ('col_index=', col_cell, 
-                               this_cell_value,
-                               'this_cell_value=',cell_containers[col_cell].data["cell_current_value"],
-                               )
+
                         if this_cell_value == needs:
                             can_be = False
-                            continue
+                            cannot_reason = 'col cannot put value ' + needs + ' in col ' \
+                                          + str(col)
+                                          ##+ str(col_of_cell_index(col_cell))
+                            print (cannot_reason)
+                            break
+                    if can_be == False: next
 
-                    box =  box_of(row,col)
-                    for box_cell in cells_in_box(box):
-                        cell_current_value = cell_containers[box_cell].data["cell_current_value"]
+                    for box_cell in box_cells:
                         this_cell_value = cell_containers[box_cell].data["cell_current_value"]
-                        print ('box=index=', box_cell, cell_current_value,
-                               'cell_current_value=',cell_containers[box_cell].data["cell_current_value"],
-                              )
-                        if this_cell_value in row_has:
+                        
+                        if this_cell_value == needs:
                             can_be = False
-                            continue
+                            cannot_reason = 'box cannot put value ' + needs + ' in col ' \
+                                          + str(col) + ' box '+ str(box_cell)
+                                          ## + str(col_of_cell_index(box_cell)) \
+                            print (cannot_reason)
+                            break
 
                     if can_be:
                         can_be_count += 1
-                        new_value = needs
 
-            if can_be == 1:
-                print ('new value found', new_value, )
-            
+                if can_be == 1:
+                    print ('new value found', needs, row, col )
+                else:
+                    print ('cannot be', needs, row, col, cannot_reason)    
             pass
 
         def col_can_be(data):
@@ -307,7 +313,6 @@ if __name__ == "__main__":
                 text_new_value = init_values[cell_index]
                 if text_new_value == '.': text_new_value = '__'
 
-                ##print ('click_init', cell_index, cell_containers[cell_index].content)
                 cell_containers[cell_index].content = ft.Text(text_new_value)
                 cell_containers[cell_index].bgcolor="green"
                 cell_containers[cell_index].data["cell_current_value"] = text_new_value
