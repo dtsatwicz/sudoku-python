@@ -225,80 +225,72 @@ if __name__ == "__main__":
             global cell_containers
 
             row = data["cell_row"]
+            print (' 1 row_can_be', row)
 
-            print ('row_can_be1 ', row)
-
-            row_has=[]
             row_needs = sudoku_numbers()
             row_cells = cells_in_row(row)
             for row_cell in row_cells:
-
                 cell_current_value = cell_containers[row_cell].data["cell_current_value"]
                 if cell_current_value != "__":
-                    row_has.append(cell_current_value)
                     row_needs.remove (cell_current_value)
-        
-            print ('row_can_be2', row, 'row_needs ', row_needs)
+            print (' 2 row_can_be', row, 'row_needs ', row_needs)
              
             for needs in row_needs:
-
-                print ('row_can_be3a row, needs ==>', row, needs)
+                print ('3a row_can_be row, needs ==>', row, needs)
 
                 can_be_count = 0
-                can_be = True
+                can_be_cell = -1
+                can_be_col = -1
                 cannot_reason = ''
 
                 for col_cell in cells_in_row(row):
-                    cell_current_value = cell_containers[col_cell].data["cell_current_value"]
-                    col = cell_containers[col_cell].data["cell_col"]
+                    if can_be_count <= 1:
+                        cell_current_value = cell_containers[col_cell].data["cell_current_value"]
+                        col = cell_containers[col_cell].data["cell_col"]
             
-                    print ('row_can_be3b row, col ', row, col, needs, can_be_count,  cell_current_value)
-                    can_be = True
+                        print ('3b row_can_be row, col ', row, col, needs, can_be_count,  cell_current_value)
 
-                    if cell_current_value != "__":
-                        continue
-                    print ('row_can_be3c row, col ', row, col, needs, can_be_count,  cell_current_value)
+                        if cell_current_value == "__":
+                            print ('3c row_can_be row, col ', 
+                                   row, col, needs, can_be_count,  cell_current_value)
 
-                    col_cells = cells_in_col(col)
-                    col_values = values_in_cells(col_cells)
-                    if needs in col_values:
-                        can_be = False
-                        cannot_reason = 'col cannot put value ' + needs + ' in col ' \
-                                          + str(col)
-                        print ('row_can_be5a', row, col, needs, can_be_count, cannot_reason)
-                    else:
-                        box =  box_of(row,col)
-                        box_cells = cells_in_box(box)
-                        box_values = values_in_cells(box_cells)
-                        if needs in box_values:
-                            can_be = False
-                        cannot_reason = 'box cannot put value ' + needs + ' in box ' \
-                                          + str(box)
-                        print ('row_can_be5b', row, col, needs, can_be_count, cannot_reason)
-                    if can_be == False: 
-                        continue
+                            col_cells = cells_in_col(col)
+                            col_values = values_in_cells(col_cells)
+                            cannot_reason = ''
+                            if needs in col_values:
+                                can_be = False
+                                cannot_reason = 'col cannot put value ' + needs + ' in col ' \
+                                                  + str(col)
+                                print ('5a row_can_be', row, col, needs, can_be_count, cannot_reason)
+                            else:
+                                box =  box_of(row,col)
+                                box_cells = cells_in_box(box)
+                                box_values = values_in_cells(box_cells)
 
-                    print ('row_can_be4 row, col needs', row, col, needs, can_be_count, 
-                            ' of row_needs', row_needs)
-                    pass
-
-                    if can_be:
-                        can_be_count += 1
-                        print (' ===> new value found can be', row, col, needs, can_be_count)
-                        if can_be_count > 1: 
-                            cannot_reason = 'cannot put value ' + needs + ' in col ' \
-                                          + str(col) + ' box '+ str(box) \
-                                          + ' can_be_count= ' + str(can_be_count)
-                            print ('row_can_be 5 ', row, col, needs, cannot_reason)
-                            break
+                                if needs in box_values:
+                                    can_be = False
+                                    cannot_reason = 'box cannot put value ' + needs + ' in box ' \
+                                                      + str(box)
+                                    print ('5b row_can_be', row, col, needs, can_be_count, cannot_reason)
+                                else:
+                                    ## needs can go in this col_cell
+                                    can_be_count += 1
+                                    can_be_cell = col_cell
+                                    can_be_col = col
+                                    print (' 4 row_can_be row, col needs ==> cellCanBe', 
+                                           row, col, needs, ' of row_needs', row_needs, col_cell)
 
                 if can_be_count == 1:
-                    print ('row_can_be6a ==>', row, col, needs)
+                    print ('6a row_can_be ==>', row, col, needs, can_be_count)
                     print ()
-                    pass
                 else:
-                    print ('row_can_be6b ==>', row, col, needs, can_be_count, cannot_reason)    
-                    pass
+                    cannot_reason = 'cannot put value ' + needs + ' in col ' \
+                    + str(col) + ' box ' + ' can_be_count= ' + str(can_be_count)
+                    print ('6b row_can_be ', row, col, needs, cannot_reason)
+
+                print (' 9 end of needs loop ', row, can_be_col, needs, can_be_count, 
+                                               can_be_cell, cannot_reason)
+                print ()
             pass
 
         def col_can_be(data):
