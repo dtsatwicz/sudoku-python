@@ -134,7 +134,7 @@ if __name__ == "__main__":
             
             elif text_action_to_take == 'Set Cell To':
                 e.control.content = ft.Text(next_cell_value)
-                e.control.bfcolor="red"
+                e.control.bgcolor="red"
                 page.update()
             
             elif text_action_to_take == 'Run Row Can Be':
@@ -142,11 +142,11 @@ if __name__ == "__main__":
                 page.update()
             
             elif text_action_to_take == 'Run Col Can Be':
-                cells_set = col_can_be(e)
+                cells_set = col_can_be(e.control.data)
                 page.update()
             
             elif text_action_to_take == 'Run Box Can Be':
-                cells_set = box_can_be(e)
+                cells_set = box_can_be(e.control.data)
                 page.update()
             
             elif text_action_to_take == 'Run All Can Be':
@@ -284,6 +284,10 @@ if __name__ == "__main__":
 
                 if can_be_count == 1:
                     cells_set.append([row, can_be_col, needs, can_be_cell])
+                    cell_containers[can_be_cell].data["cell_current_value"] = needs
+                    cell_containers[can_be_cell].content = ft.Text(needs)
+                    cell_containers[can_be_cell].content.bgcolor="orange"
+                    page.update()
                     print ('6a row_can_be ==>', row, col, needs, can_be_count)
                     print ()
                 else:
