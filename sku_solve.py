@@ -156,7 +156,6 @@ if __name__ == "__main__":
             else:
                 print (text_action_to_take, ' is not implimented', )
 
-
         def number_clicked(e):
             global next_cell_value
             global text_action_to_take
@@ -385,9 +384,88 @@ if __name__ == "__main__":
             pass
             return cells_set
 
-
         def box_can_be(data):
-            print ('box_can_be')
+            global cell_containers
+
+            cells_set = []
+
+            box = data["cell_box"]
+            print (' 1 box_can_be', box)
+
+            box_needs = sudoku_numbers()
+            box_cells = cells_in_box(box)
+            for box_cell in box_cells:
+                cell_current_value = cell_containers[box_cell].data["cell_current_value"]
+                if cell_current_value != "__":
+                    box_needs.remove (cell_current_value)
+            print (' 2 box_can_be', box, 'box_needs ', box_needs)
+             
+            for needs in box_needs:
+                print ('3a box_can_be box, needs ==>', box, needs)
+
+                can_be_count = 0
+                can_be_cell = -1
+                can_be_row = -1
+                can_be_col = -1
+                cannot_reason = ''
+
+                for box_cell in cells_in_box(box):
+
+                    row = cell_containers[box_cell].data["cell_row"]
+                    row_cells = cells_in_row(row)
+                    row_values = values_in_cells(row_cells)
+
+                    col = cell_containers[box_cell].data["cell_col"]
+                    col_cells = cells_in_col(col)
+                    col_values = values_in_cells(col_cells)
+
+                    if can_be_count <= 1:
+                        cell_current_value = cell_containers[box_cell].data["cell_current_value"]
+            
+                        print ('3b box_can_be box, row, col ', box, row, needs, can_be_count,  cell_current_value)
+
+                        if cell_current_value == "__":
+                            print ('3c box_can_be box, row, col ', 
+                                   box, row, col, needs, can_be_count,  cell_current_value)
+
+                            col_cells = cells_in_col(col)
+                            col_values = values_in_cells(col_cells)
+                            cannot_reason = ''
+                            if needs in col_values or needs in row_values:
+                                can_be = False
+                                cannot_reason = 'box cannot put value ' + needs \
+                                    + 'in row ' + str(row) + ' in col ' + str(col)
+                                print ('5a box_can_be', box, row, col, needs, can_be_count, cannot_reason)
+                            else:
+                                ## needs can go in this col_cell
+                                can_be_count += 1
+                                can_be_cell = box_cell
+                                can_be_row = row
+                                can_be_col = col
+                                print (' 4 box_can_be row, col needs ==> cellCanBe', 
+                                        row, col, needs, ' of box_needs', box_needs, box_cell)
+
+                if can_be_count == 1:
+                    cells_set.append([row, can_be_col, needs, can_be_cell])
+                    cell_containers[can_be_cell].data["cell_current_value"] = needs
+                    cell_containers[can_be_cell].content = ft.Text(needs)
+                    cell_containers[can_be_cell].content.bgcolor="orange"
+                    page.update()
+                    print ('6a box_can_be ==>', row, col, needs, can_be_count)
+                    print ()
+                else:
+                    cannot_reason = 'cannot put value ' + needs + ' in col ' \
+                    + str(col) + ' row ' + ' can_be_count= ' + str(can_be_count)
+                    print ('6b box_can_be ', row, col, needs, cannot_reason)
+
+                print (' 9 end of needs loop ', row, can_be_col, needs, can_be_count, 
+                                               can_be_cell, cannot_reason)
+                print ()
+
+            print ('box_can_be returning', cells_set)
+            pass
+            return cells_set
+
 
         def all_can_be(data):
             print ('all_can_be')
