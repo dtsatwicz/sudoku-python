@@ -138,19 +138,19 @@ if __name__ == "__main__":
                 page.update()
             
             elif text_action_to_take == 'Run Row Can Be':
-                row_can_be(e.control.data)
+                cells_set = row_can_be(e.control.data)
                 page.update()
             
             elif text_action_to_take == 'Run Col Can Be':
-                col_can_be(e)
+                cells_set = col_can_be(e)
                 page.update()
             
             elif text_action_to_take == 'Run Box Can Be':
-                box_can_be(e)
+                cells_set = box_can_be(e)
                 page.update()
             
             elif text_action_to_take == 'Run All Can Be':
-                all_can_be(e)
+                cells_set = all_can_be(e)
                 page.update()
             
             else:
@@ -224,6 +224,8 @@ if __name__ == "__main__":
         def row_can_be(data):
             global cell_containers
 
+            cells_set = []
+
             row = data["cell_row"]
             print (' 1 row_can_be', row)
 
@@ -281,6 +283,7 @@ if __name__ == "__main__":
                                            row, col, needs, ' of row_needs', row_needs, col_cell)
 
                 if can_be_count == 1:
+                    cells_set.append([row, can_be_col, needs, can_be_cell])
                     print ('6a row_can_be ==>', row, col, needs, can_be_count)
                     print ()
                 else:
@@ -291,7 +294,10 @@ if __name__ == "__main__":
                 print (' 9 end of needs loop ', row, can_be_col, needs, can_be_count, 
                                                can_be_cell, cannot_reason)
                 print ()
+
+            print ('row_can_be returning', cells_set)
             pass
+            return cells_set
 
         def col_can_be(data):
             print ('col_can_be')
