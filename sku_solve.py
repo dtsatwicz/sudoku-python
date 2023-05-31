@@ -7,7 +7,7 @@ if __name__ == "__main__":
 
         page.title="Sudoku"
         page.window_height=500
-        page.window_width=300
+        page.window_width=320
 
         result = ft.Text(value='0')
         new_cell_value = ft.Text(value='0')
@@ -149,6 +149,10 @@ if __name__ == "__main__":
                 cells_set = box_can_be(e.control.data)
                 page.update()
             
+            elif text_action_to_take == 'Run Cell Can Be':
+                cells_set = cell_can_be(e.control.data)
+                page.update()
+            
             elif text_action_to_take == 'Run All Can Be':
                 cells_set = all_can_be(e)
                 page.update()
@@ -197,6 +201,15 @@ if __name__ == "__main__":
             global text_action_to_take
             print ('click_box_can_be')
             text_action_to_take = "Run Box Can Be"
+            action_to_take.current.controls.clear()
+            action_to_take.current.controls.append(ft.Text(text_action_to_take))
+            #new_cell_value.current.controls.clear()
+            page.update()
+
+        def click_cell_can_be(e):
+            global text_action_to_take
+            print ('click_cell_can_be')
+            text_action_to_take = "Run Cell Can Be"
             action_to_take.current.controls.clear()
             action_to_take.current.controls.append(ft.Text(text_action_to_take))
             #new_cell_value.current.controls.clear()
@@ -470,6 +483,9 @@ if __name__ == "__main__":
         def all_can_be(data):
             print ('all_can_be')
 
+        def cell_can_be(data):
+            print ('cell_can_be')
+
         def click_init(e):
             global next_cell_value
             global cell_containers
@@ -506,19 +522,20 @@ if __name__ == "__main__":
             cell_index = 0
             for row in range (1,10):
                 this_row = []
+                this_row.append( ft.VerticalDivider(width=3,thickness=3, color="black"))
                 for col in range (1,10):
                     box = box_of(row,col)
                     c = ft.Container(
 						content=ft.Text("__"),
-						width=20,
-						height=20,
+						width=30,
+						height=30,
 						bgcolor="blue",
 						ink=False,
 						data= {"cell_index": cell_index,
 								"cell_row": row,
 								"cell_col": col,
 								"cell_box": box,
-								"cell_current_value": '',
+								"cell_current_value": '__',
                                 "cell_bgcolor": "blue",
                                 "cell_highlighted": False,
 								"cell_value_source": ''},
@@ -529,8 +546,14 @@ if __name__ == "__main__":
 
                     cell_containers.append(c)
                     this_row.append(c)
+                    if col in (3,6,9):
+                        this_row.append( ft.VerticalDivider(width=3,thickness=3, color="black"))
 
-                page.add(ft.Row(this_row))
+                if row == 1 :
+                    page.add(ft.Divider(height=3,thickness=3,color='black'))
+                page.add(ft.Row(this_row,spacing=1,expand=True))
+                if row in (3,6,9):
+                    page.add(ft.Divider(height=3,thickness=3,color='black'))
 
             page.add(ft.Row(controls=[action_to_take],ref=action_to_take,data=ft.Text('No Action Set')))
             page.add(ft.Row(controls=[new_cell_value],ref=new_cell_value,data=ft.Text('__')))
@@ -554,17 +577,54 @@ if __name__ == "__main__":
                 set_numbers.append(c)
             page.add(ft.Row(set_numbers))
 
-            page.add(
-	        	ft.Row(
-	        		controls=[
-	        			ft.ElevatedButton(text='Row',on_click=click_row_can_be),
-	        			ft.ElevatedButton(text='Col',on_click=click_col_can_be),
-	        			ft.ElevatedButton(text='Box',on_click=click_box_can_be),
-	        			ft.ElevatedButton(text='All3',on_click=click_all_can_be),
-	        			ft.ElevatedButton(text='Init',on_click=click_init),
-	            		]
-	                ),
-                )    
+            commands = []
+            c = ft.Container(
+	        		content=ft.Text('Row'),
+                    width = 45,
+                    height = 30,
+    				bgcolor="green",
+    				ink=False,
+	        		on_click=click_row_can_be,
+                    )
+            commands.append(c)        
+            c = ft.Container(
+	        		content=ft.Text('Col'),
+                    width = 45,
+                    height = 30,
+    				bgcolor="green",
+    				ink=False,
+                    on_click=click_col_can_be,
+                    )
+            commands.append(c)        
+            c = ft.Container(
+	        		content=ft.Text('Box'),
+                    width = 45,
+                    height = 30,
+    				bgcolor="green",
+    				ink=False,
+	        		on_click=click_box_can_be,
+                    )
+            commands.append(c)        
+            c = ft.Container(
+	        		content=ft.Text('All3'),
+                    width = 45,
+                    height = 30,
+    				bgcolor="green",
+    				ink=False,
+                    on_click=click_all_can_be,
+                    )
+            commands.append(c)        
+            c = ft.Container(
+	        		content=ft.Text('Cell'),
+                    width = 45,
+                    height = 30,
+    				bgcolor="green",
+    				ink=False,
+                    on_click=click_cell_can_be,
+                    )
+            commands.append(c)        
+
+            page.add(ft.Row(commands,spacing=1,expand=True))
 
             page.add(
 	        	ft.Row(
@@ -577,7 +637,7 @@ if __name__ == "__main__":
 
         sudoku_grid()
 
-        click_init(1)
-        click_row_can_be(3)
+        ##click_init(1)
+        ##click_row_can_be(3)
 
     ft.app(target=main)
