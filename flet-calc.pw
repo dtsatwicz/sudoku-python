@@ -20,10 +20,14 @@ def main(page: ft.Page):
                     data="AC",
                 ),
                 ft.ElevatedButton(text="+/-"),
+                ft.VerticalDivider(width=3,thickness=3, color="black"),
                 ft.ElevatedButton(text="%"),
                 ft.ElevatedButton(text="/"),
             ]
         ),
+
+        ft.Divider(height=3,thickness=3,color='black'),
+
         ft.Row(
             controls=[
                 ft.ElevatedButton(text="7"),

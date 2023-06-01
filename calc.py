@@ -3,6 +3,7 @@ import flet as ft
 def main(page: ft.Page):
 	page.title = 'Calc App'
 	result = ft.Text(value='0')
+	width=500
 
 	def clicked_ac(e):
 		print ('clicked_ac')
